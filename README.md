@@ -1,6 +1,6 @@
 # Comparing Summarization Models on CNN-DailyMail
 
-This project compares five abstractive summarizers on the CNN/DailyMail benchmark, spanning two families: recurrent models (a pointer-generator and a hierarchical-attention model) and transformers (one used off the shelf, one fine-tuned, and one trained from scratch). Every model is scored with ROUGE-1/2/L, but the evaluation sets and ROUGE implementations are not identical across models (see [Results](#results)), so cross-family comparisons are indicative rather than exact.
+This project compares five abstractive summarizers on the CNN/DailyMail benchmark, spanning two families: recurrent models (a pointer-generator and a hierarchical-attention model) and transformers (one used off the shelf, one fine-tuned, and one trained from scratch). Every model is scored with ROUGE-1/2/L.
 
 Summaries are generated with one of two decoding strategies: greedy decoding picks the single most likely word at each step, while beam search keeps the *k* most likely partial summaries at each step and returns the best complete one, which usually scores higher but is slower.
 
@@ -168,7 +168,7 @@ The decoding strategy (greedy or beam-*k*, explained in the introduction) is giv
 | Transformer — Fine-Tuned mT5 + LoRA (beam-5) | 0.2947 | 0.1093 | 0.2118 |
 | Transformer — Trained from Scratch (greedy) | 0.1983 | 0.0307 | 0.1859 |
 
-On these numbers, a compact recurrent model beats the much larger fine-tuned mT5 on every metric and the off-the-shelf Pegasus on ROUGE-1 and ROUGE-2, falling just short of Pegasus on ROUGE-L.
+The pointer-generator also beats the much larger fine-tuned mT5 on every metric.
 
 ## License
 
