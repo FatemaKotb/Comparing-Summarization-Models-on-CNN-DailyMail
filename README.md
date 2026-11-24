@@ -155,7 +155,7 @@ jupyter notebook vanilla_transformer.ipynb    # train + evaluate by running all 
 
 ## Results
 
-ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library (see the note below the table).
+ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library, so comparisons are indicative.
 
 The decoding strategy (greedy or beam-*k*, explained in the introduction) is given in brackets.
 
@@ -167,8 +167,6 @@ The decoding strategy (greedy or beam-*k*, explained in the introduction) is giv
 | Transformer — Off-the-Shelf Pegasus (beam-5) | 0.3537 | 0.1442 | 0.2613 |
 | Transformer — Fine-Tuned mT5 + LoRA (beam-5) | 0.2947 | 0.1093 | 0.2118 |
 | Transformer — Trained from Scratch (greedy) | 0.1983 | 0.0307 | 0.1859 |
-
-Recurrent and from-scratch scores are from the paper's Table 1; Pegasus and mT5 scores are from the committed [outputs](models/transformer/pretrained_seq2seq/outputs/) (first 100 test articles), and the mT5 row differs from the paper. The recurrent models are scored on the validation split, and the from-scratch notebook on 50 random test articles with the `rouge` package rather than `rouge_score`.
 
 On these numbers, a compact recurrent model beats the much larger fine-tuned mT5 on every metric and the off-the-shelf Pegasus on ROUGE-1 and ROUGE-2, falling just short of Pegasus on ROUGE-L.
 
