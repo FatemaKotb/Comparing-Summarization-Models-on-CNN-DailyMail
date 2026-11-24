@@ -1,0 +1,29 @@
+{
+    "model_name": "mt5",
+
+    "dataset_type": "dailymail",
+    "dataset_dir": "data/raw_data/DailyMail/3.0.0",
+
+    "output_path": "outputs/mt5_dailymail_predictions.json",
+
+    "task_prefix": "summarize: ",
+    "task_suffix": "",
+
+    "max_tokens": 1024,
+    "max_output_tokens": 256,
+
+    "checkpoints_dir": "checkpoints/mt5_dailymail_3",
+
+    "num_epochs": 3,
+    "batch_size": 2,
+    "learning_rate": 8e-4,
+    "gradient_accumulation_steps": 8,
+
+    "fp16": false,
+    "bf16": true,
+
+    "save_checkpoints": true,
+
+    "pretrained_lora_weights": "checkpoints/mt5_dailymail_2/epoch_1"
+
+}

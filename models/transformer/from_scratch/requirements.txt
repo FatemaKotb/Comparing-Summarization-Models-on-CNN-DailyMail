@@ -1,0 +1,8 @@
+# Inferred from the notebook's imports (the original submission shipped no requirements file).
+torch
+transformers
+sentencepiece
+pandas
+kagglehub
+rouge
+jupyter

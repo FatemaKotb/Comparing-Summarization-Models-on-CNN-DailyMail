@@ -1,0 +1,54 @@
+dataset_name: abisee/cnn_dailymail
+dataset_config: "3.0.0"
+
+# vocab (must match artifacts/vocab.json produced by build_vocab.py)
+vocab_size: 50000
+min_freq: 2
+lowercase: true
+
+# lengths
+max_src_len: 800
+max_src_sents: 60
+max_tgt_len: 120
+
+# LVT (Large Vocabulary Trick)
+lvt_k: 3000
+common_pool_max_samples: 20000
+
+# training
+batch_size: 64
+num_workers: 2
+lr: 0.00015
+epochs: 1
+grad_clip: 2.0
+seed: 42
+
+# model (hierarchical attention)
+emb_dim: 100
+hidden_dim: 200
+attn_dim: 200
+dropout: 0.2
+pos_dim: 32
+max_pos: 120
+
+# decoding
+max_dec_len: 120
+beam_size: 4
+len_penalty: 0.6
+min_dec_len: 35
+
+# paths (same conventions as base.yaml)
+artifacts_dir: artifacts
+ckpt_dir: checkpoints
+run_dir: runs
+
+# validation / early stopping / lr decay
+eval_every: 200
+max_val_batches: 200
+early_stop_metric: rouge2     # rouge1 / rouge2 / rougeL
+early_stop_patience: 3
+early_stop_min_delta: 0.0001
+
+lr_factor: 0.5
+lr_patience: 1
+min_lr: 0.000001
