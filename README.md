@@ -44,6 +44,7 @@ Both recurrent models read CNN/DailyMail 3.0.0 from HuggingFace (`abisee/cnn_dai
 
 ```bash
 cd models/recurrent
+pip install -r requirements.txt   # shared by Pointer-Generator and Hierarchical Attention
 python -m scripts.build_vocab   # optional: regenerates artifacts/vocab.json
 ```
 
