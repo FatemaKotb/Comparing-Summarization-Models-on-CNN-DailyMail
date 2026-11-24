@@ -1,0 +1,49 @@
+dataset_name: abisee/cnn_dailymail
+dataset_config: "3.0.0"
+
+# vocab
+vocab_size: 50000
+min_freq: 2
+lowercase: true
+
+# lengths
+max_src_len: 600
+max_tgt_len: 120
+
+# training
+batch_size: 8
+num_workers: 2
+lr: 0.00015
+epochs: 3
+grad_clip: 2.0
+
+# model
+emb_dim: 128
+hidden_dim: 256
+dropout: 0.2
+use_coverage: true
+cov_lambda: 1.0
+
+# decoding
+max_dec_len: 120
+
+# paths
+artifacts_dir: artifacts
+ckpt_dir: checkpoints
+run_dir: runs
+
+# validation / early stopping / lr decay
+eval_every: 2000              # validate every N steps
+max_val_batches: 200          # speed: validate on first N batches only
+min_dec_len: 35               # avoid too-short summaries during val decode
+
+early_stop_metric: rouge2     # rouge1 / rouge2 / rougeL
+early_stop_patience: 3        # stop after N evals with no improvement
+early_stop_min_delta: 0.0001
+
+lr_factor: 0.5                # ReduceLROnPlateau factor
+lr_patience: 1                # wait N evals before reducing LR
+min_lr: 0.000001
+
+beam_size: 4
+len_penalty: 0.6

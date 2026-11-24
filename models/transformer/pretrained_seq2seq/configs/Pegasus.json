@@ -1,0 +1,10 @@
+{
+    "model_name": "pegasus",
+    "dataset_type": "dailymail",
+    "dataset_dir": "data/raw_data/DailyMail/3.0.0",
+    "output_path": "outputs/pegasus_predictions.json",
+    "task_prefix": "",
+    "task_suffix": "",
+    "max_tokens": 1024,
+    "batch_size": 4
+}
