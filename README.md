@@ -46,7 +46,7 @@ python -m scripts.build_vocab       # optional: regenerates artifacts/vocab.json
 
 #### Pointer-Generator
 
-At each decoding step, the model either generates a word from its vocabulary or copies a word directly from the article by pointing at it with attention; a learned switch decides the mix. Copying lets it reproduce names and rare words, even ones outside its vocabulary. Coverage tracks how much attention each article word has already received, which discourages the model from repeating itself. Source articles are truncated to 600 tokens and summaries to 120, and it is trained with teacher forcing plus a coverage loss.
+Each summary word is generated from the vocabulary or copied from the article; tracking already-attended words (coverage) discourages repetition.
 
 ```mermaid
 flowchart LR
@@ -67,7 +67,7 @@ python -m scripts.eval
 
 #### Hierarchical Attention
 
-Attending to sentences before words suits long news articles where only a few sentences carry the summary. A local vocabulary table (LVT) limits the decoder to a small per-batch vocabulary of about 3,000 words to keep decoding fast. Source articles are truncated to 800 tokens and split into at most 60 sentences, with summaries capped at 120 tokens.
+It attends to key sentences, then to words within them, and decodes from a small per-batch vocabulary (LVT).
 
 ```mermaid
 flowchart LR
@@ -92,7 +92,7 @@ The three transformers are ordered by how much training this project performs on
 
 #### Off-the-Shelf (Pegasus)
 
-Pegasus is a transformer pre-trained for abstractive summarization. The checkpoint used, `google/pegasus-cnn_dailymail`, has already been fine-tuned by Google on CNN/DailyMail, and this project runs it as-is with no further training; so although the paper calls this setting zero-shot, the model has already seen this dataset. Articles are read from local Parquet files (default `data/raw_data/DailyMail/3.0.0`) and truncated to 1024 tokens with the Pegasus tokenizer.
+Pegasus is run as-is, but this checkpoint was already fine-tuned on CNN/DailyMail, so it isn't truly zero-shot.
 
 ```mermaid
 flowchart LR
@@ -106,6 +106,7 @@ flowchart LR
 ```bash
 cd models/transformer/pretrained_seq2seq
 pip install -r requirements.txt   # shared with Fine-Tuned (mT5)
+# expects CNN/DailyMail Parquet files in data/raw_data/DailyMail/3.0.0
 # no training step
 python -m inference.generate_summaries --config configs/Pegasus.json   # -> outputs/pegasus_predictions.json
 python -m evaluation.run_evaluation --config configs/Pegasus.json      # ROUGE: outputs/pegasus_eval_111.json
@@ -113,7 +114,7 @@ python -m evaluation.run_evaluation --config configs/Pegasus.json      # ROUGE: 
 
 #### Fine-Tuned (mT5 + LoRA)
 
-mT5 is a multilingual text-to-text transformer, fine-tuned here with LoRA adapters so that under 1% of its parameters are updated. Articles are read from local Parquet files and truncated to 1024 input and 256 output tokens. At inference, each article is prefixed with `summarize:`; training does not add this prefix.
+Multilingual mT5 is fine-tuned with LoRA adapters that update under 1% of its parameters.
 
 ```mermaid
 flowchart LR
@@ -129,6 +130,7 @@ flowchart LR
 ```bash
 cd models/transformer/pretrained_seq2seq
 pip install -r requirements.txt   # shared with Off-the-Shelf (Pegasus)
+# expects CNN/DailyMail Parquet files in data/raw_data/DailyMail/3.0.0
 python -m training.train --config configs/Mt5.json
 python -m inference.generate_summaries --config configs/Mt5.json   # -> outputs/mt5_dailymail_predictions.json
 python -m evaluation.run_evaluation --config configs/Mt5.json      # ROUGE: outputs/mt5_eval_111.json
@@ -136,7 +138,7 @@ python -m evaluation.run_evaluation --config configs/Mt5.json      # ROUGE: outp
 
 #### Trained from Scratch
 
-Built and trained from scratch with no pre-training, this model serves as a baseline. The notebook pulls the CNN/DailyMail CSVs from Kaggle, tokenizes them with the t5-base tokenizer, and truncates articles to 400 tokens and summaries to 100. Both training and evaluation run inside the notebook rather than from the command line.
+This baseline is a 6-layer encoder-decoder transformer trained from scratch, with no pre-training, inside a Kaggle notebook.
 
 ```mermaid
 flowchart LR
