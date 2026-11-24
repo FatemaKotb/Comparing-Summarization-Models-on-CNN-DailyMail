@@ -168,8 +168,6 @@ The decoding strategy (greedy or beam-*k*, explained in the introduction) is giv
 | Transformer — Fine-Tuned mT5 + LoRA (beam-5) | 0.2947 | 0.1093 | 0.2118 |
 | Transformer — Trained from Scratch (greedy) | 0.1983 | 0.0307 | 0.1859 |
 
-The pointer-generator also beats the much larger fine-tuned mT5 on every metric.
-
 ## License
 
 This project is licensed under the MIT License.
