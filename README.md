@@ -157,7 +157,11 @@ jupyter notebook vanilla_transformer.ipynb    # train + evaluate by running all 
 
 ## Results
 
-ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library, so the last column gives each row's source and evaluation set:
+ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library, so the last column gives each row's source and evaluation set.
+
+The decoding strategy is given in brackets. Greedy decoding picks the single most likely word at each step; beam-*k* search keeps the *k* most likely partial summaries at each step and returns the best complete one, which usually scores higher but is slower.
+
+| Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source and evaluation set |
 
 | Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source and evaluation set |
 |---|---|---|---|---|
