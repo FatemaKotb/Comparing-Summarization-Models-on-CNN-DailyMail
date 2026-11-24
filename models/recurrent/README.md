@@ -26,8 +26,8 @@ is downloaded automatically by 🤗 Datasets.
 
 ## Vocabulary
 
-Both models load the committed `artifacts/vocab.json` (50k tokens, `min_freq: 2`, lowercased).
-To rebuild it:
+Both models load the committed `artifacts/vocab.json` (50k tokens, `min_freq: 2`, lowercased, built from
+the training split), so no build step is needed. Rebuilding is optional and **overwrites the committed file**:
 
 ```bash
 python -m scripts.build_vocab                          # uses configs/base.yaml
@@ -41,8 +41,9 @@ python -m scripts.train      # reads configs/base.yaml; best model -> checkpoint
 python -m scripts.eval       # loads checkpoints/pgn_best.pt; reports ROUGE-1/2/L
 ```
 
-Greedy and beam-search decoding are both supported, controlled from `configs/base.yaml`
-(`beam_size`, `len_penalty`, `max_dec_len`, `min_dec_len`).
+`scripts.eval` scores the validation split with beam search. Decoding is controlled from `configs/base.yaml`
+(`beam_size`, `len_penalty`, `max_dec_len`, `min_dec_len`); `beam_size: 1` is effectively greedy decoding.
+Scores below are ROUGE F1 (`rouge_score`, with stemming) from Table 1 of the paper.
 
 | Decoding | ROUGE-1 | ROUGE-2 | ROUGE-L |
 |---|:---:|:---:|:---:|

@@ -24,7 +24,7 @@ IDs are indices into the CNN/DailyMail 3.0.0 `test` split. Pegasus emits `<n>` a
 - **16:** The number of executions recorded around the world dropped significantly in 2014 compared with the previous year, from 778 to 607 . The rise is largely because of developments in Egypt and Nigeria, where courts imposed hundreds of death sentences in the context of internal political instability or crime and armed conflict, and other countries expanded the scope of capital crimes within their penal codes - including Iraq, Nigeria and Egypt, in a year when the United Nations was founded in 1945, only eight countries had abolished the death penalty.
 - **17:** German airline Lufthansa confirmed that co-pilot Andreas Lubitz had a "previous episode of severe depression"
 
-## Pegasus (zero-shot, `google/pegasus-cnn_dailymail`)
+## Pegasus (off the shelf, `google/pegasus-cnn_dailymail`)
 
 - **ID 0:** The Palestinian Authority formally becomes the 123rd member of the International Criminal Court .<n>It also accepts the court's jurisdiction over alleged crimes in the West Bank, East Jerusalem and the Gaza Strip.
 - **ID 1:** Theia, a white-and-black bully breed mix, was apparently hit by a car and buried in a field .<n>Four days later, the dog staggers to a nearby farm, covered in dirt, and is taken in by an animal control worker.

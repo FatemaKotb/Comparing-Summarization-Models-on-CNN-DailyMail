@@ -6,7 +6,10 @@ config passed via `--config`; `models/model_factory.py` maps the config's `model
 | Model | Config | Wrapper | Checkpoint |
 |---|---|---|---|
 | mT5-base + LoRA (fine-tuned) | `configs/Mt5.json` | `models/mt5.py` | `google/mt5-base` |
-| Pegasus, zero-shot | `configs/Pegasus.json` | `models/pegasus.py` | `google/pegasus-cnn_dailymail` |
+| Pegasus, off the shelf (no further training) | `configs/Pegasus.json` | `models/pegasus.py` | `google/pegasus-cnn_dailymail` |
+
+`google/pegasus-cnn_dailymail` has already been fine-tuned by Google on CNN/DailyMail. The paper calls this
+setting "zero-shot", but it is really an in-domain baseline that this project uses without further training.
 
 ```
 pretrained_seq2seq/
@@ -39,7 +42,7 @@ data/raw_data/DailyMail/3.0.0/
 ## Usage
 
 ```bash
-# Fine-tune mT5 with LoRA (Pegasus is evaluated zero-shot and is not trained)
+# Fine-tune mT5 with LoRA (Pegasus is used as-is and is not trained)
 python -m training.train --config configs/Mt5.json
 
 # Generate summaries for the first 100 test articles -> the config's output_path
@@ -54,19 +57,25 @@ python -m evaluation.run_evaluation --config configs/Pegasus.json
 python -m inference.test_model --config configs/Pegasus.json
 ```
 
-`configs/Mt5.json` resumes from LoRA weights at `checkpoints/mt5_dailymail_2/epoch_1`
-(`pretrained_lora_weights`) and writes new checkpoints to `checkpoints/mt5_dailymail_3`.
-Remove `pretrained_lora_weights` to start from the base model.
+`configs/Mt5.json` sets `pretrained_lora_weights` to `checkpoints/mt5_dailymail_2/epoch_1`, which is
+**not in the repo** (checkpoints are git-ignored), so `train`, `generate_summaries` and `test_model` fail
+with this config on a fresh clone. To train from base mT5, delete that line. To generate summaries with adapters
+you trained, point it at your checkpoint (training writes `checkpoints/mt5_dailymail_3/epoch_<N>`).
+
+**Input prefix.** `generate_summaries` and `test_model` prepend the config's `task_prefix` (`summarize: ` for
+mT5). The training collator accepts `task_prefix` but does not apply it, so training inputs are unprefixed.
 
 ## Results
 
+ROUGE F1 (`rouge_score`, with stemming) on the **first 100 articles of the CNN/DailyMail test split**.
+Summaries come from `inference/generate_summaries.py`: beam search with 5 beams, `no_repeat_ngram_size=2`,
+length penalty 1.0.
+
 | Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source |
 |---|:---:|:---:|:---:|---|
-| mT5 + LoRA (beam 4) | 0.3947 | 0.2093 | 0.3118 | paper Table 1; original mT5 README |
-| mT5 + LoRA | 0.2947 | 0.1093 | 0.2118 | [`outputs/mt5_eval_111.json`](outputs/mt5_eval_111.json) |
-| Pegasus zero-shot (beam 4) | 0.3537 | 0.1442 | 0.2613 | [`outputs/pegasus_eval_111.json`](outputs/pegasus_eval_111.json); paper Table 1 |
+| mT5 + LoRA (beam 5) | 0.2947 | 0.1093 | 0.2118 | [`outputs/mt5_eval_111.json`](outputs/mt5_eval_111.json) |
+| Pegasus, off the shelf (beam 5) | 0.3537 | 0.1442 | 0.2613 | [`outputs/pegasus_eval_111.json`](outputs/pegasus_eval_111.json) |
 
-> The committed mT5 eval JSON is exactly 0.1 below the paper on all three metrics (the original mT5
-> README labelled the eval "after 2 epochs"). Both values are kept unchanged — reconcile before citing.
+The paper's Table 1 reports different mT5 scores; the committed evaluation outputs above are the reference.
 
 Qualitative outputs for both models: [`outputs/sample_summaries.md`](outputs/sample_summaries.md).
