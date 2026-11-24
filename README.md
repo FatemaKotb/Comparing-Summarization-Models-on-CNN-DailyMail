@@ -162,8 +162,6 @@ ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples o
 The decoding strategy is given in brackets. Greedy decoding picks the single most likely word at each step; beam-*k* search keeps the *k* most likely partial summaries at each step and returns the best complete one, which usually scores higher but is slower.
 
 | Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source and evaluation set |
-
-| Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source and evaluation set |
 |---|---|---|---|---|
 | Recurrent — Pointer-Generator (greedy) | 0.3668 | 0.1486 | 0.2475 | paper Table 1; validation split, `rouge_score` |
 | Recurrent — Pointer-Generator (beam-4) | 0.3786 | 0.1629 | 0.2584 | paper Table 1; validation split, `rouge_score` |
