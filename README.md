@@ -155,20 +155,20 @@ jupyter notebook vanilla_transformer.ipynb    # train + evaluate by running all 
 
 ## Results
 
-ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library, so the last column gives each row's source and evaluation set.
+ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library (see the note below the table).
 
 The decoding strategy (greedy or beam-*k*, explained in the introduction) is given in brackets.
 
-| Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source and evaluation set |
-|---|---|---|---|---|
-| Recurrent — Pointer-Generator (greedy) | 0.3668 | 0.1486 | 0.2475 | paper Table 1; validation split, `rouge_score` |
-| Recurrent — Pointer-Generator (beam-4) | 0.3786 | 0.1629 | 0.2584 | paper Table 1; validation split, `rouge_score` |
-| Recurrent — Hierarchical Attention (beam-4) | 0.2934 | 0.1087 | 0.2037 | paper Table 1; validation split, `rouge_score` |
-| Transformer — Off-the-Shelf Pegasus (beam-5) | 0.3537 | 0.1442 | 0.2613 | [`pegasus_eval_111.json`](models/transformer/pretrained_seq2seq/outputs/pegasus_eval_111.json); first 100 test articles, `rouge_score` |
-| Transformer — Fine-Tuned mT5 + LoRA (beam-5) | 0.2947 | 0.1093 | 0.2118 | [`mt5_eval_111.json`](models/transformer/pretrained_seq2seq/outputs/mt5_eval_111.json); first 100 test articles, `rouge_score` |
-| Transformer — Trained from Scratch (greedy) | 0.1983 | 0.0307 | 0.1859 | paper Table 1; notebook scores 50 random test articles with the `rouge` package |
+| Model | ROUGE-1 | ROUGE-2 | ROUGE-L |
+|---|---|---|---|
+| Recurrent — Pointer-Generator (greedy) | 0.3668 | 0.1486 | 0.2475 |
+| Recurrent — Pointer-Generator (beam-4) | 0.3786 | 0.1629 | 0.2584 |
+| Recurrent — Hierarchical Attention (beam-4) | 0.2934 | 0.1087 | 0.2037 |
+| Transformer — Off-the-Shelf Pegasus (beam-5) | 0.3537 | 0.1442 | 0.2613 |
+| Transformer — Fine-Tuned mT5 + LoRA (beam-5) | 0.2947 | 0.1093 | 0.2118 |
+| Transformer — Trained from Scratch (greedy) | 0.1983 | 0.0307 | 0.1859 |
 
-`rouge_score` is run with stemming; the `rouge` package used in the notebook is a different implementation and does not give identical numbers. The two pretrained transformer rows are taken from the committed evaluation outputs. The mT5 row differs from the paper's Table 1, which reports different mT5 scores; this README uses the committed outputs.
+Recurrent and from-scratch scores are from the paper's Table 1; Pegasus and mT5 scores are from the committed [outputs](models/transformer/pretrained_seq2seq/outputs/) (first 100 test articles), and the mT5 row differs from the paper. The recurrent models are scored on the validation split, and the from-scratch notebook on 50 random test articles with the `rouge` package rather than `rouge_score`.
 
 On these numbers, a compact recurrent model beats the much larger fine-tuned mT5 on every metric and the off-the-shelf Pegasus on ROUGE-1 and ROUGE-2, falling just short of Pegasus on ROUGE-L.
 
