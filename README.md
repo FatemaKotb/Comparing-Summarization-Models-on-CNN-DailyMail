@@ -59,9 +59,7 @@ flowchart LR
 ```
 
 ```bash
-cd models/recurrent
-pip install -r requirements.txt   # shared with Hierarchical Attention
-python -m scripts.train   # config: configs/base.yaml
+python -m scripts.train             # config: configs/base.yaml
 python -m scripts.eval
 ```
 
@@ -80,9 +78,7 @@ flowchart LR
 ```
 
 ```bash
-cd models/recurrent
-pip install -r requirements.txt   # shared with Pointer-Generator
-python -m scripts.train_hieratt   # config: configs/hieratt.yaml (sets seed 42)
+python -m scripts.train_hieratt     # config: configs/hieratt.yaml
 python -m scripts.eval_hieratt
 ```
 
@@ -105,11 +101,11 @@ flowchart LR
 
 ```bash
 cd models/transformer/pretrained_seq2seq
-pip install -r requirements.txt   # shared with Fine-Tuned (mT5)
+pip install -r requirements.txt                                         # shared with Fine-Tuned (mT5)
 # expects CNN/DailyMail Parquet files in data/raw_data/DailyMail/3.0.0
 # no training step
-python -m inference.generate_summaries --config configs/Pegasus.json   # -> outputs/pegasus_predictions.json
-python -m evaluation.run_evaluation --config configs/Pegasus.json      # ROUGE: outputs/pegasus_eval_111.json
+python -m inference.generate_summaries --config configs/Pegasus.json    # -> outputs/pegasus_predictions.json
+python -m evaluation.run_evaluation --config configs/Pegasus.json       # ROUGE: outputs/pegasus_eval_111.json
 ```
 
 #### Fine-Tuned (mT5 + LoRA)
@@ -129,11 +125,11 @@ flowchart LR
 
 ```bash
 cd models/transformer/pretrained_seq2seq
-pip install -r requirements.txt   # shared with Off-the-Shelf (Pegasus)
+pip install -r requirements.txt                                         # shared with Off-the-Shelf (Pegasus)
 # expects CNN/DailyMail Parquet files in data/raw_data/DailyMail/3.0.0
 python -m training.train --config configs/Mt5.json
-python -m inference.generate_summaries --config configs/Mt5.json   # -> outputs/mt5_dailymail_predictions.json
-python -m evaluation.run_evaluation --config configs/Mt5.json      # ROUGE: outputs/mt5_eval_111.json
+python -m inference.generate_summaries --config configs/Mt5.json        # -> outputs/mt5_dailymail_predictions.json
+python -m evaluation.run_evaluation --config configs/Mt5.json           # ROUGE: outputs/mt5_eval_111.json
 ```
 
 #### Trained from Scratch
