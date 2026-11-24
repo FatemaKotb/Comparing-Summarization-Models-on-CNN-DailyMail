@@ -13,23 +13,23 @@ This was a course project for CMP639 Advanced Natural Language Processing, Cairo
 ```
 Comparing-Summarization-Models-on-CNN-DailyMail/
 ├── paper/
-│   └── paper.pdf                           # full write-up (methods, results, refs)
+│   └── paper.pdf                               # full write-up (methods, results, refs)
 └── models/
-    ├── recurrent/                          # Recurrent (one package, both models)
-    │   ├── configs/                        # base.yaml (pointer-generator), hieratt.yaml
-    │   ├── scripts/                        # build_vocab, train, eval, train_hieratt, eval_hieratt
+    ├── recurrent/                              # Recurrent (one package, both models)
+    │   ├── configs/                            # base.yaml (pointer-generator), hieratt.yaml
+    │   ├── scripts/                            # build_vocab, train, eval, train_hieratt, eval_hieratt
     │   ├── src/
     │   │   ├── data/ utils/
-    │   │   └── model/                       # pgn.py (pointer-generator), hieratt.py (hierarchical attention)
-    │   └── artifacts/vocab.json             # shared vocabulary (committed)
-    └── transformer/                        # Transformer
-        ├── from_scratch/                    # trained from scratch
+    │   │   └── model/                          # pgn.py (pointer-generator), hieratt.py (hierarchical attention)
+    │   └── artifacts/vocab.json                # shared vocabulary (committed)
+    └── transformer/                            # Transformer
+        ├── from_scratch/                       # trained from scratch
         │   └── vanilla_transformer.ipynb
-        └── pretrained_seq2seq/              # fine-tuned and off-the-shelf (one package)
-            ├── configs/                     # Mt5.json (fine-tuned), Pegasus.json (off-the-shelf)
-            ├── models/                      # base_model, model_factory, mt5, pegasus
+        └── pretrained_seq2seq/                 # fine-tuned and off-the-shelf (one package)
+            ├── configs/                        # Mt5.json (fine-tuned), Pegasus.json (off-the-shelf)
+            ├── models/                         # base_model, model_factory, mt5, pegasus
             ├── training/ inference/ evaluation/ preprocessing/
-            └── outputs/                     # mt5_eval_111.json, pegasus_eval_111.json, sample_summaries.md
+            └── outputs/                        # mt5_eval_111.json, pegasus_eval_111.json, sample_summaries.md
 ```
 
 ## Models
@@ -44,11 +44,9 @@ pip install -r requirements.txt     # shared by Pointer-Generator and Hierarchic
 python -m scripts.build_vocab       # optional: regenerates artifacts/vocab.json
 ```
 
-Evaluation decodes with beam search; the beam width (`beam_size`, where 1 is effectively greedy) and length penalty are set in each model's config.
-
 #### Pointer-Generator
 
-The copy path helps reproduce names and rare words taken straight from the article, and coverage discourages the model from repeating itself. Source articles are truncated to 600 tokens and summaries to 120, and it is trained with teacher forcing plus a coverage loss.
+At each decoding step, the model either generates a word from its vocabulary or copies a word directly from the article by pointing at it with attention; a learned switch decides the mix. Copying lets it reproduce names and rare words, even ones outside its vocabulary. Coverage tracks how much attention each article word has already received, which discourages the model from repeating itself. Source articles are truncated to 600 tokens and summaries to 120, and it is trained with teacher forcing plus a coverage loss.
 
 ```mermaid
 flowchart LR
