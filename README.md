@@ -2,6 +2,8 @@
 
 This project compares five abstractive summarizers on the CNN/DailyMail benchmark, spanning two families: recurrent models (a pointer-generator and a hierarchical-attention model) and transformers (one used off the shelf, one fine-tuned, and one trained from scratch). Every model is scored with ROUGE-1/2/L, but the evaluation sets and ROUGE implementations are not identical across models (see [Results](#results)), so cross-family comparisons are indicative rather than exact.
 
+Summaries are generated with one of two decoding strategies: greedy decoding picks the single most likely word at each step, while beam search keeps the *k* most likely partial summaries at each step and returns the best complete one, which usually scores higher but is slower.
+
 On the reported numbers, the beam-search pointer-generator scores highest on ROUGE-1 and ROUGE-2, while the off-the-shelf Pegasus transformer is close behind and best on ROUGE-L.
 
 This was a course project for CMP639 Advanced Natural Language Processing, Cairo University. The paper (PDF) is in `paper/`.
@@ -159,7 +161,7 @@ jupyter notebook vanilla_transformer.ipynb    # train + evaluate by running all 
 
 ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library, so the last column gives each row's source and evaluation set.
 
-The decoding strategy is given in brackets. Greedy decoding picks the single most likely word at each step; beam-*k* search keeps the *k* most likely partial summaries at each step and returns the best complete one, which usually scores higher but is slower.
+The decoding strategy (greedy or beam-*k*, explained in the introduction) is given in brackets.
 
 | Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Source and evaluation set |
 |---|---|---|---|---|
