@@ -32,10 +32,10 @@ Comparing-Summarization-Models-on-CNN-DailyMail/
 
 ## Setup
 
-Each model folder ships its own `requirements.txt` because their dependency footprints differ, so install from inside the folder you want to run:
+There are three `requirements.txt` files, one per code folder, because their dependency footprints differ: `models/recurrent/` (both recurrent models), `models/transformer/pretrained_seq2seq/` (Pegasus and mT5), and `models/transformer/from_scratch/`. Install from inside the folder you want to run:
 
 ```bash
-cd models/<model-folder>
+cd models/<folder>   # recurrent, transformer/pretrained_seq2seq, or transformer/from_scratch
 pip install -r requirements.txt
 ```
 
