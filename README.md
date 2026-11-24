@@ -155,7 +155,7 @@ jupyter notebook vanilla_transformer.ipynb    # train + evaluate by running all 
 
 ## Results
 
-ROUGE F1 on CNN/DailyMail. The models were not all scored on the same examples or with the same ROUGE library, so comparisons are indicative.
+Scores are ROUGE F1 (higher is better). Models were not all evaluated on the same articles or with the same ROUGE tool, so treat differences between them as approximate.
 
 The decoding strategy (greedy or beam-*k*, explained in the introduction) is given in brackets.
 
