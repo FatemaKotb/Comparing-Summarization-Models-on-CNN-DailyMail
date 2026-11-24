@@ -32,14 +32,7 @@ Comparing-Summarization-Models-on-CNN-DailyMail/
 
 ## Setup
 
-There are three `requirements.txt` files, one per code folder, because their dependency footprints differ: `models/recurrent/` (both recurrent models), `models/transformer/pretrained_seq2seq/` (Pegasus and mT5), and `models/transformer/from_scratch/`. Install from inside the folder you want to run:
-
-```bash
-cd models/<folder>   # recurrent, transformer/pretrained_seq2seq, or transformer/from_scratch
-pip install -r requirements.txt
-```
-
-Only `pretrained_seq2seq/requirements.txt` pins exact versions (developed on Python 3.11.9); the `recurrent/` and `from_scratch/` files list unpinned package names. The recurrent package targets Python 3.10+.
+Each model's section below starts with its own install command, because the dependency footprints differ. Only `pretrained_seq2seq/requirements.txt` pins exact versions (developed on Python 3.11.9); the `recurrent/` and `from_scratch/` files list unpinned package names. The recurrent package targets Python 3.10+.
 
 Datasets, checkpoints, and run logs are git-ignored. Each model loads CNN/DailyMail in its own way, with its config file and any committed results noted in its section below.
 
@@ -72,6 +65,7 @@ flowchart LR
 
 ```bash
 cd models/recurrent
+pip install -r requirements.txt   # shared with Hierarchical Attention
 python -m scripts.train   # config: configs/base.yaml
 python -m scripts.eval
 ```
@@ -92,6 +86,7 @@ flowchart LR
 
 ```bash
 cd models/recurrent
+pip install -r requirements.txt   # shared with Pointer-Generator
 python -m scripts.train_hieratt   # config: configs/hieratt.yaml (sets seed 42)
 python -m scripts.eval_hieratt
 ```
@@ -115,6 +110,7 @@ flowchart LR
 
 ```bash
 cd models/transformer/pretrained_seq2seq
+pip install -r requirements.txt   # shared with Fine-Tuned (mT5)
 # no training step
 python -m inference.generate_summaries --config configs/Pegasus.json   # -> outputs/pegasus_predictions.json
 python -m evaluation.run_evaluation --config configs/Pegasus.json      # ROUGE: outputs/pegasus_eval_111.json
@@ -137,6 +133,7 @@ flowchart LR
 
 ```bash
 cd models/transformer/pretrained_seq2seq
+pip install -r requirements.txt   # shared with Off-the-Shelf (Pegasus)
 python -m training.train --config configs/Mt5.json
 python -m inference.generate_summaries --config configs/Mt5.json   # -> outputs/mt5_dailymail_predictions.json
 python -m evaluation.run_evaluation --config configs/Mt5.json      # ROUGE: outputs/mt5_eval_111.json
